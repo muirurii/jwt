@@ -9,6 +9,7 @@ router.route('/')
     .delete(postsController.deletePost);
 
 router.route('/hide')
-    .post(postsController.hidePost);
+    .post(postsController.hidePost)
+    .put(postsController.unHidePost);
 
 module.exports = router;

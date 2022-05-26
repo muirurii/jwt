@@ -9,8 +9,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 const PORT = process.env.PORT || 5000;
 
+app.use(require('./middleware/setCredentials'));
 
-const allowed = ['http://127.0.0.1:5000', 'http://127.0.0.1:8022', 'http://www.google.com'];
+const allowed = require('./middleware/allowedOrigins');
+
 const corsOptions = {
     origin: (origin, callback) => {
         if (allowed.includes(origin) || !origin) {
@@ -22,13 +24,12 @@ const corsOptions = {
     optionsSuccessStatus: 200
 }
 
-app.use(cors());
+app.use(cors(corsOptions));
 
 app.use("/register", require("./routes/register"));
 app.use("/login", require("./routes/login"));
 app.use("/refresh", require("./routes/refresh"));
 app.use("/logout", require("./routes/logout"));
-
 
 app.use(verifyJWT);
 
